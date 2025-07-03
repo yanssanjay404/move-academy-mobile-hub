@@ -1,12 +1,13 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 
+type EmployeeScreen = 'home' | 'tasks' | 'attendance' | 'profile' | 'leave-request' | 'task-detail';
+
 interface EmployeeHomeProps {
-  onNavigate: (screen: string) => void;
+  onNavigate: (screen: EmployeeScreen) => void;
 }
 
 const EmployeeHome: React.FC<EmployeeHomeProps> = ({ onNavigate }) => {
