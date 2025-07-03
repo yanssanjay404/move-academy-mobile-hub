@@ -1,11 +1,12 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
+type AdminScreen = 'dashboard' | 'tasks' | 'attendance' | 'settings' | 'leave-approval' | 'create-sprint';
+
 interface AdminTaskManagementProps {
-  onNavigate: (screen: string) => void;
+  onNavigate: (screen: AdminScreen) => void;
 }
 
 const AdminTaskManagement: React.FC<AdminTaskManagementProps> = ({ onNavigate }) => {
