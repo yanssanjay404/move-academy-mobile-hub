@@ -3,136 +3,52 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+
+type AdminScreen = 'dashboard' | 'tasks' | 'attendance' | 'settings' | 'leave-approval' | 'create-sprint';
 
 interface AdminDashboardProps {
-  onNavigate: (screen: string) => void;
+  onNavigate: (screen: AdminScreen) => void;
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
+  const stats = [
+    { title: 'Total Employees', value: '24', change: '+2 this month', color: 'bg-blue-50 text-blue-700' },
+    { title: 'Active Tasks', value: '48', change: '+8 this week', color: 'bg-green-50 text-green-700' },
+    { title: 'Pending Leaves', value: '3', change: '2 need approval', color: 'bg-yellow-50 text-yellow-700' },
+    { title: 'Sprint Progress', value: '68%', change: 'On track', color: 'bg-purple-50 text-purple-700' }
+  ];
+
+  const recentActivities = [
+    { user: 'Sarah Johnson', action: 'Completed task: API Integration', time: '2 hours ago' },
+    { user: 'Mike Rodriguez', action: 'Submitted leave request', time: '4 hours ago' },
+    { user: 'Anna Lee', action: 'Checked in at office', time: '1 day ago' },
+    { user: 'David Chen', action: 'Updated project status', time: '1 day ago' }
+  ];
+
   return (
     <div className="p-4 space-y-4">
-      {/* Welcome Card */}
+      {/* Welcome Header */}
       <Card className="bg-gradient-to-r from-purple-600 to-purple-700 text-white">
         <CardContent className="p-6">
           <h1 className="text-2xl font-bold mb-2">Admin Dashboard</h1>
-          <p className="text-purple-100">Monitor and manage your team</p>
-          <div className="mt-4">
-            <Badge variant="secondary" className="bg-white/20 text-white">
-              System Administrator
-            </Badge>
-          </div>
+          <p className="text-purple-100">Welcome back! Here's your team overview.</p>
         </CardContent>
       </Card>
 
-      {/* Today's Overview */}
+      {/* Key Statistics */}
       <div className="grid grid-cols-2 gap-4">
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-600">18</div>
-            <div className="text-sm text-gray-600">Present Today</div>
-            <div className="text-xs text-gray-500 mt-1">out of 20</div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-red-600">2</div>
-            <div className="text-sm text-gray-600">Absent</div>
-            <div className="text-xs text-gray-500 mt-1">1 sick, 1 leave</div>
-          </CardContent>
-        </Card>
+        {stats.map((stat, index) => (
+          <Card key={index}>
+            <CardContent className="p-4">
+              <div className={`inline-flex px-2 py-1 rounded text-xs font-medium mb-2 ${stat.color}`}>
+                {stat.title}
+              </div>
+              <div className="text-2xl font-bold text-gray-800">{stat.value}</div>
+              <div className="text-xs text-gray-500">{stat.change}</div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
-
-      {/* Sprint Progress */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Current Sprint Progress</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-sm font-medium">Q4 Development Sprint</span>
-              <span className="text-sm text-gray-600">68% Complete</span>
-            </div>
-            <Progress value={68} className="h-2" />
-            
-            <div className="grid grid-cols-4 gap-2 text-center text-xs">
-              <div>
-                <div className="font-bold text-gray-600">8</div>
-                <div className="text-gray-500">Backlog</div>
-              </div>
-              <div>
-                <div className="font-bold text-orange-600">5</div>
-                <div className="text-gray-500">To Do</div>
-              </div>
-              <div>
-                <div className="font-bold text-blue-600">3</div>
-                <div className="text-gray-500">In Progress</div>
-              </div>
-              <div>
-                <div className="font-bold text-green-600">12</div>
-                <div className="text-gray-500">Done</div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Task Completion Chart */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Team Performance</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">SJ</span>
-                </div>
-                <span className="text-sm font-medium">Sarah Johnson</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-16 bg-gray-200 rounded-full h-2">
-                  <div className="bg-blue-600 h-2 rounded-full" style={{width: '80%'}}></div>
-                </div>
-                <span className="text-xs text-gray-600">8/10</span>
-              </div>
-            </div>
-            
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">MR</span>
-                </div>
-                <span className="text-sm font-medium">Mike Rodriguez</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-16 bg-gray-200 rounded-full h-2">
-                  <div className="bg-green-600 h-2 rounded-full" style={{width: '90%'}}></div>
-                </div>
-                <span className="text-xs text-gray-600">9/10</span>
-              </div>
-            </div>
-            
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">AL</span>
-                </div>
-                <span className="text-sm font-medium">Anna Lee</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-16 bg-gray-200 rounded-full h-2">
-                  <div className="bg-purple-600 h-2 rounded-full" style={{width: '60%'}}></div>
-                </div>
-                <span className="text-xs text-gray-600">6/10</span>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Quick Actions */}
       <Card>
@@ -141,41 +57,60 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
         </CardHeader>
         <CardContent className="space-y-3">
           <Button 
-            className="w-full justify-start h-12"
-            onClick={() => onNavigate('leave-approval')}
-          >
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">3</span>
-              </div>
-              <div className="text-left">
-                <div className="font-medium">Pending Leave Requests</div>
-                <div className="text-xs opacity-70">3 requests awaiting approval</div>
-              </div>
-            </div>
-          </Button>
-          
-          <Button 
-            variant="outline"
-            className="w-full justify-start h-12"
+            className="w-full h-12 bg-blue-600 hover:bg-blue-700"
             onClick={() => onNavigate('create-sprint')}
           >
-            <div className="text-left">
-              <div className="font-medium">Create New Sprint</div>
-              <div className="text-xs text-gray-500">Plan next development cycle</div>
+            <div className="text-center">
+              <div className="font-semibold">Create New Sprint</div>
+              <div className="text-sm opacity-90">Plan team tasks</div>
             </div>
           </Button>
           
-          <Button 
-            variant="outline"
-            className="w-full justify-start h-12"
-            onClick={() => onNavigate('attendance')}
-          >
-            <div className="text-left">
-              <div className="font-medium">View Attendance Report</div>
-              <div className="text-xs text-gray-500">Check team attendance today</div>
+          <div className="grid grid-cols-2 gap-3">
+            <Button 
+              variant="outline" 
+              className="h-12"
+              onClick={() => onNavigate('leave-approval')}
+            >
+              <div className="text-center">
+                <div className="text-sm font-medium">Approve Leaves</div>
+                <div className="text-xs text-gray-500">3 pending</div>
+              </div>
+            </Button>
+            <Button 
+              variant="outline" 
+              className="h-12"
+              onClick={() => onNavigate('tasks')}
+            >
+              <div className="text-center">
+                <div className="text-sm font-medium">Manage Tasks</div>
+                <div className="text-xs text-gray-500">48 active</div>
+              </div>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Team Overview */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Team Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <div className="text-2xl font-bold text-green-600">18</div>
+              <div className="text-xs text-gray-500">Present</div>
             </div>
-          </Button>
+            <div>
+              <div className="text-2xl font-bold text-yellow-600">4</div>
+              <div className="text-xs text-gray-500">Remote</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-red-600">2</div>
+              <div className="text-xs text-gray-500">On Leave</div>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
@@ -186,26 +121,42 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            <div className="flex items-center space-x-3">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <div className="flex-1">
-                <div className="text-sm font-medium">Sarah Johnson checked in</div>
-                <div className="text-xs text-gray-500">9:00 AM - Move Academy Office</div>
+            {recentActivities.map((activity, index) => (
+              <div key={index} className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">
+                    {activity.user.split(' ').map(n => n[0]).join('')}
+                  </span>
+                </div>
+                <div className="flex-1">
+                  <div className="text-sm font-medium">{activity.user}</div>
+                  <div className="text-xs text-gray-500">{activity.action}</div>
+                </div>
+                <div className="text-xs text-gray-400">{activity.time}</div>
               </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* System Status */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">System Status</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-sm">Employee Database</span>
+              <Badge className="bg-green-100 text-green-800">Online</Badge>
             </div>
-            <div className="flex items-center space-x-3">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <div className="flex-1">
-                <div className="text-sm font-medium">New task completed</div>
-                <div className="text-xs text-gray-500">API Integration by Mike Rodriguez</div>
-              </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm">Task Management</span>
+              <Badge className="bg-green-100 text-green-800">Online</Badge>
             </div>
-            <div className="flex items-center space-x-3">
-              <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-              <div className="flex-1">
-                <div className="text-sm font-medium">Leave request submitted</div>
-                <div className="text-xs text-gray-500">Anna Lee - Annual Leave</div>
-              </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm">Attendance System</span>
+              <Badge className="bg-green-100 text-green-800">Online</Badge>
             </div>
           </div>
         </CardContent>

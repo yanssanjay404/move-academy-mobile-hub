@@ -2,45 +2,50 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+
+type AdminScreen = 'dashboard' | 'tasks' | 'attendance' | 'settings' | 'leave-approval' | 'create-sprint';
 
 interface AdminCreateSprintProps {
-  onNavigate: (screen: string) => void;
+  onNavigate: (screen: AdminScreen) => void;
 }
 
 const AdminCreateSprint: React.FC<AdminCreateSprintProps> = ({ onNavigate }) => {
   const [sprintName, setSprintName] = useState('');
-  const [description, setDescription] = useState('');
+  const [sprintGoal, setSprintGoal] = useState('');
+  const [duration, setDuration] = useState('');
   const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [selectedTeam, setSelectedTeam] = useState('');
-
-  const teamMembers = [
-    { id: 'sarah', name: 'Sarah Johnson', role: 'Frontend Developer' },
-    { id: 'mike', name: 'Mike Rodriguez', role: 'Backend Developer' },
-    { id: 'anna', name: 'Anna Lee', role: 'UI/UX Designer' },
-    { id: 'david', name: 'David Chen', role: 'QA Engineer' }
-  ];
-
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
 
-  const handleMemberSelect = (memberId: string, checked: boolean) => {
-    if (checked) {
-      setSelectedMembers([...selectedMembers, memberId]);
-    } else {
-      setSelectedMembers(selectedMembers.filter(id => id !== memberId));
-    }
+  const teamMembers = [
+    { id: '1', name: 'Sarah Johnson', role: 'Frontend Developer' },
+    { id: '2', name: 'Mike Rodriguez', role: 'Backend Developer' },
+    { id: '3', name: 'Anna Lee', role: 'UI/UX Designer' },
+    { id: '4', name: 'David Chen', role: 'QA Engineer' },
+    { id: '5', name: 'Lisa Wang', role: 'Full Stack Developer' }
+  ];
+
+  const handleMemberToggle = (memberId: string) => {
+    setSelectedMembers(prev => 
+      prev.includes(memberId) 
+        ? prev.filter(id => id !== memberId)
+        : [...prev, memberId]
+    );
   };
 
   const handleCreateSprint = () => {
-    if (!sprintName || !startDate || !endDate || selectedMembers.length === 0) {
+    if (!sprintName || !sprintGoal || !duration || !startDate) {
       alert('Please fill in all required fields');
       return;
     }
     
+    if (selectedMembers.length === 0) {
+      alert('Please select at least one team member');
+      return;
+    }
+
     alert('Sprint created successfully!');
     onNavigate('tasks');
   };
@@ -52,7 +57,7 @@ const AdminCreateSprint: React.FC<AdminCreateSprintProps> = ({ onNavigate }) => 
         <Button variant="ghost" onClick={() => onNavigate('tasks')}>
           ← Back
         </Button>
-        <h1 className="text-xl font-bold text-center flex-1">Create Sprint</h1>
+        <h1 className="text-xl font-bold">Create New Sprint</h1>
         <div></div>
       </div>
 
@@ -64,40 +69,47 @@ const AdminCreateSprint: React.FC<AdminCreateSprintProps> = ({ onNavigate }) => 
         <CardContent className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-2">Sprint Name *</label>
-            <Input
-              placeholder="e.g., Q1 Development Sprint"
+            <input
+              type="text"
               value={sprintName}
               onChange={(e) => setSprintName(e.target.value)}
+              placeholder="e.g., Q1 Feature Development"
+              className="w-full p-3 border border-gray-300 rounded-md"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Description</label>
+            <label className="block text-sm font-medium mb-2">Sprint Goal *</label>
             <Textarea
-              placeholder="Brief description of sprint goals..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={sprintGoal}
+              onChange={(e) => setSprintGoal(e.target.value)}
+              placeholder="Describe the main objective of this sprint..."
               className="h-20"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
+              <label className="block text-sm font-medium mb-2">Duration *</label>
+              <Select value={duration} onValueChange={setDuration}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select duration" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1-week">1 Week</SelectItem>
+                  <SelectItem value="2-weeks">2 Weeks</SelectItem>
+                  <SelectItem value="3-weeks">3 Weeks</SelectItem>
+                  <SelectItem value="4-weeks">4 Weeks</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
               <label className="block text-sm font-medium mb-2">Start Date *</label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">End Date *</label>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="w-full p-3 border border-gray-300 rounded-md"
               />
             </div>
           </div>
@@ -107,89 +119,82 @@ const AdminCreateSprint: React.FC<AdminCreateSprintProps> = ({ onNavigate }) => 
       {/* Team Selection */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Assign Team Members</CardTitle>
+          <CardTitle className="text-lg">Select Team Members</CardTitle>
+          <p className="text-sm text-gray-600">Choose team members for this sprint</p>
         </CardHeader>
         <CardContent className="space-y-3">
           {teamMembers.map((member) => (
-            <div key={member.id} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-              <Checkbox
-                id={member.id}
-                checked={selectedMembers.includes(member.id)}
-                onCheckedChange={(checked) => handleMemberSelect(member.id, checked as boolean)}
-              />
-              <div className="flex items-center space-x-3 flex-1">
-                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">
-                    {member.name.split(' ').map(n => n[0]).join('')}
-                  </span>
+            <div 
+              key={member.id}
+              className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                selectedMembers.includes(member.id) 
+                  ? 'border-purple-500 bg-purple-50' 
+                  : 'border-gray-200 hover:border-gray-300'
+              }`}
+              onClick={() => handleMemberToggle(member.id)}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm font-bold">
+                      {member.name.split(' ').map(n => n[0]).join('')}
+                    </span>
+                  </div>
+                  <div>
+                    <div className="font-medium text-sm">{member.name}</div>
+                    <div className="text-xs text-gray-500">{member.role}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="font-medium text-sm">{member.name}</div>
-                  <div className="text-xs text-gray-500">{member.role}</div>
-                </div>
+                {selectedMembers.includes(member.id) && (
+                  <Badge className="bg-purple-100 text-purple-800">Selected</Badge>
+                )}
               </div>
             </div>
           ))}
-          
-          <div className="text-sm text-gray-600 mt-2">
-            Selected: {selectedMembers.length} member{selectedMembers.length !== 1 ? 's' : ''}
-          </div>
         </CardContent>
       </Card>
 
-      {/* Sprint Templates */}
+      {/* Sprint Preview */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Sprint Template</CardTitle>
+          <CardTitle className="text-lg">Sprint Preview</CardTitle>
         </CardHeader>
         <CardContent>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Choose a template (optional)" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="development">Development Sprint</SelectItem>
-              <SelectItem value="bugfix">Bug Fix Sprint</SelectItem>
-              <SelectItem value="feature">Feature Sprint</SelectItem>
-              <SelectItem value="maintenance">Maintenance Sprint</SelectItem>
-            </SelectContent>
-          </Select>
-          <div className="text-xs text-gray-500 mt-2">
-            Templates provide pre-configured task structures
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Sprint Goals */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Sprint Goals</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="goal1" />
-              <label htmlFor="goal1" className="text-sm">Complete API integration</label>
+          <div className="space-y-3">
+            <div className="flex justify-between">
+              <span className="text-gray-600">Sprint Name:</span>
+              <span className="font-medium">{sprintName || 'Not specified'}</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox id="goal2" />
-              <label htmlFor="goal2" className="text-sm">Fix critical bugs</label>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Duration:</span>
+              <span className="font-medium">{duration || 'Not specified'}</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox id="goal3" />
-              <label htmlFor="goal3" className="text-sm">Improve code coverage</label>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Start Date:</span>
+              <span className="font-medium">{startDate || 'Not specified'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Team Size:</span>
+              <span className="font-medium">{selectedMembers.length} members</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Action Buttons */}
-      <div className="space-y-2">
-        <Button onClick={handleCreateSprint} className="w-full h-12">
+      <div className="space-y-3">
+        <Button 
+          onClick={handleCreateSprint}
+          className="w-full h-12 bg-purple-600 hover:bg-purple-700"
+        >
           Create Sprint
         </Button>
-        <Button variant="outline" className="w-full" onClick={() => onNavigate('tasks')}>
-          Save as Draft
+        <Button 
+          variant="outline"
+          onClick={() => onNavigate('tasks')}
+          className="w-full h-12"
+        >
+          Cancel
         </Button>
       </div>
     </div>
