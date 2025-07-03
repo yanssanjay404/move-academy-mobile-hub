@@ -18,22 +18,26 @@ interface EmployeeAppProps {
 const EmployeeApp: React.FC<EmployeeAppProps> = ({ onLogout }) => {
   const [currentScreen, setCurrentScreen] = useState<EmployeeScreen>('home');
 
+  const handleNavigate = (screen: EmployeeScreen) => {
+    setCurrentScreen(screen);
+  };
+
   const renderScreen = () => {
     switch (currentScreen) {
       case 'home':
-        return <EmployeeHome onNavigate={setCurrentScreen} />;
+        return <EmployeeHome onNavigate={handleNavigate} />;
       case 'tasks':
-        return <EmployeeTask onNavigate={setCurrentScreen} />;
+        return <EmployeeTask onNavigate={handleNavigate} />;
       case 'attendance':
-        return <EmployeeAttendance onNavigate={setCurrentScreen} />;
+        return <EmployeeAttendance onNavigate={handleNavigate} />;
       case 'profile':
-        return <EmployeeProfile onNavigate={setCurrentScreen} />;
+        return <EmployeeProfile onNavigate={handleNavigate} />;
       case 'leave-request':
-        return <EmployeeLeaveRequest onNavigate={setCurrentScreen} />;
+        return <EmployeeLeaveRequest onNavigate={handleNavigate} />;
       case 'task-detail':
-        return <TaskDetail onNavigate={setCurrentScreen} />;
+        return <TaskDetail onNavigate={handleNavigate} />;
       default:
-        return <EmployeeHome onNavigate={setCurrentScreen} />;
+        return <EmployeeHome onNavigate={handleNavigate} />;
     }
   };
 
