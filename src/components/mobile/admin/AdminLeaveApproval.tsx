@@ -1,12 +1,13 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 
+type AdminScreen = 'dashboard' | 'tasks' | 'attendance' | 'settings' | 'leave-approval' | 'create-sprint';
+
 interface AdminLeaveApprovalProps {
-  onNavigate: (screen: string) => void;
+  onNavigate: (screen: AdminScreen) => void;
 }
 
 const AdminLeaveApproval: React.FC<AdminLeaveApprovalProps> = ({ onNavigate }) => {

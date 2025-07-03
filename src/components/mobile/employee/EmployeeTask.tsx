@@ -4,8 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
+type EmployeeScreen = 'home' | 'tasks' | 'attendance' | 'profile' | 'leave-request' | 'task-detail';
+
 interface EmployeeTaskProps {
-  onNavigate: (screen: string) => void;
+  onNavigate: (screen: EmployeeScreen) => void;
 }
 
 const EmployeeTask: React.FC<EmployeeTaskProps> = ({ onNavigate }) => {
