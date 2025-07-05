@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -94,7 +95,10 @@ const EmployeeTask: React.FC<EmployeeTaskProps> = ({ onNavigate }) => {
 
       {/* Floating Action Button */}
       <div className="fixed bottom-20 right-4">
-        <Button className="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg">
+        <Button 
+          className="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg"
+          onClick={() => onNavigate('task-detail')}
+        >
           <span className="text-2xl">+</span>
         </Button>
       </div>
