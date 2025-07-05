@@ -8,8 +8,9 @@ import EmployeeAttendance from './employee/EmployeeAttendance';
 import EmployeeProfile from './employee/EmployeeProfile';
 import EmployeeLeaveRequest from './employee/EmployeeLeaveRequest';
 import TaskDetail from './employee/TaskDetail';
+import AddTask from './employee/AddTask';
 
-type EmployeeScreen = 'home' | 'tasks' | 'attendance' | 'profile' | 'leave-request' | 'task-detail';
+type EmployeeScreen = 'home' | 'tasks' | 'attendance' | 'profile' | 'leave-request' | 'task-detail' | 'add-task';
 
 interface EmployeeAppProps {
   onLogout: () => void;
@@ -36,6 +37,8 @@ const EmployeeApp: React.FC<EmployeeAppProps> = ({ onLogout }) => {
         return <EmployeeLeaveRequest onNavigate={handleNavigate} />;
       case 'task-detail':
         return <TaskDetail onNavigate={handleNavigate} />;
+      case 'add-task':
+        return <AddTask onNavigate={handleNavigate} />;
       default:
         return <EmployeeHome onNavigate={handleNavigate} />;
     }
@@ -62,7 +65,7 @@ const EmployeeApp: React.FC<EmployeeAppProps> = ({ onLogout }) => {
       </div>
 
       {/* Bottom Navigation */}
-      {!['leave-request', 'task-detail'].includes(currentScreen) && (
+      {!['leave-request', 'task-detail', 'add-task'].includes(currentScreen) && (
         <Card className="m-0 rounded-none border-t bg-white">
           <div className="flex justify-around py-2">
             <Button

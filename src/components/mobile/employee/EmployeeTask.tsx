@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-type EmployeeScreen = 'home' | 'tasks' | 'attendance' | 'profile' | 'leave-request' | 'task-detail';
+type EmployeeScreen = 'home' | 'tasks' | 'attendance' | 'profile' | 'leave-request' | 'task-detail' | 'add-task';
 
 interface EmployeeTaskProps {
   onNavigate: (screen: EmployeeScreen) => void;
@@ -97,7 +97,7 @@ const EmployeeTask: React.FC<EmployeeTaskProps> = ({ onNavigate }) => {
       <div className="fixed bottom-20 right-4">
         <Button 
           className="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg"
-          onClick={() => onNavigate('task-detail')}
+          onClick={() => onNavigate('add-task')}
         >
           <span className="text-2xl">+</span>
         </Button>
