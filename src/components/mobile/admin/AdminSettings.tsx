@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-type AdminScreen = 'dashboard' | 'tasks' | 'attendance' | 'settings' | 'leave-approval' | 'create-sprint';
+type AdminScreen = 'dashboard' | 'tasks' | 'attendance' | 'settings' | 'leave-approval' | 'create-sprint' | 'add-employee';
 
 interface AdminSettingsProps {
   onNavigate: (screen: AdminScreen) => void;
@@ -70,7 +70,13 @@ const AdminSettings: React.FC<AdminSettingsProps> = ({ onNavigate }) => {
         <CardHeader>
           <div className="flex justify-between items-center">
             <CardTitle className="text-lg">Employee Management</CardTitle>
-            <Button size="sm">Add Employee</Button>
+            <Button 
+              size="sm" 
+              onClick={() => onNavigate('add-employee')}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              Add Employee
+            </Button>
           </div>
         </CardHeader>
         <CardContent className="space-y-3">

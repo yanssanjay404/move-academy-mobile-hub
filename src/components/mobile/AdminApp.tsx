@@ -8,8 +8,9 @@ import AdminAttendanceOverview from './admin/AdminAttendanceOverview';
 import AdminSettings from './admin/AdminSettings';
 import AdminLeaveApproval from './admin/AdminLeaveApproval';
 import AdminCreateSprint from './admin/AdminCreateSprint';
+import AddEmployee from './admin/AddEmployee';
 
-type AdminScreen = 'dashboard' | 'tasks' | 'attendance' | 'settings' | 'leave-approval' | 'create-sprint';
+type AdminScreen = 'dashboard' | 'tasks' | 'attendance' | 'settings' | 'leave-approval' | 'create-sprint' | 'add-employee';
 
 interface AdminAppProps {
   onLogout: () => void;
@@ -32,6 +33,8 @@ const AdminApp: React.FC<AdminAppProps> = ({ onLogout }) => {
         return <AdminLeaveApproval onNavigate={setCurrentScreen} />;
       case 'create-sprint':
         return <AdminCreateSprint onNavigate={setCurrentScreen} />;
+      case 'add-employee':
+        return <AddEmployee onNavigate={setCurrentScreen} />;
       default:
         return <AdminDashboard onNavigate={setCurrentScreen} />;
     }
@@ -58,7 +61,7 @@ const AdminApp: React.FC<AdminAppProps> = ({ onLogout }) => {
       </div>
 
       {/* Bottom Navigation */}
-      {!['leave-approval', 'create-sprint'].includes(currentScreen) && (
+      {!['leave-approval', 'create-sprint', 'add-employee'].includes(currentScreen) && (
         <Card className="m-0 rounded-none border-t bg-white">
           <div className="flex justify-around py-2">
             <Button
